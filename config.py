@@ -1,0 +1,11 @@
+after_var_delay = 1000
+PINK = "#e2979c"
+RED = "#e7305b"
+GREEN = "#9bdeac"
+YELLOW = "#f7f5dd"
+FONT_NAME = "Courier"
+TITLE_FONT_NAME = "Fixedsys"
+WORK_MIN = 25
+SHORT_BREAK_MIN = 5
+LONG_BREAK_MIN = 20
+CHECK_MARK_EMOJI = '✔️'
