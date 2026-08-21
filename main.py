@@ -18,6 +18,8 @@ reps = 1
 reset = False
 check_marks = []
 
+#TODO remove this TEMP VAR after reomving from all app.after() methods 
+after_var_delay = 1000
 
 #Basic Layout
 app = tk.Tk()
@@ -33,17 +35,23 @@ state_label.grid(column=1,row=0)
 #centre image of a tomato tomato.png plus timer itself 
 image = Image.open("tomato.png")
 tomato_photo = ImageTk.PhotoImage(image)
-tomato_image_label = tk.Label(app,text=f"00:00",image=tomato_photo,compound='center',bg=YELLOW,font=(FONT_NAME,30),fg='white')
+tomato_image_label = tk.Label(app,text=f"00:00",image=tomato_photo,compound='center',bg=YELLOW,font=(FONT_NAME,35,'bold'),fg='white')
 tomato_image_label.grid(column=1,row=1)
 
+#TODO change the code to alter the text here and no the label above 
+#create the image text(timer) pair using canvas
+#
+# canvas = tk.Canvas(width=200,height=224,bg=YELLOW,highlightthickness=0)
+# tomato_image = tk.PhotoImage(file='tomato.png')
+# canvas.create_image(100,112,tomato_image)
+# canvas.create_text(100,130,text="00:00",fill='white',font=(FONT_NAME,35,'bold'))
 
 def reset_var_reset():
     '''use this function to be able to run the start timer func again after reset when button is pressed '''
     global reset
     reset = False
 ####################################################################
-#TODO timer doesn't display f"{minutes}:00" fix this error (1)     $
-#TODO Fix title not being displayed properly stiil needs some fixing but works for now
+#TODO Fix title not being displayed properly still needs some fixing but works for now
 ####################################################################
 def start_timer_5(minutes=SHORT_BREAK_MIN-1,seconds=59):
     if reset:
@@ -58,7 +66,7 @@ def start_timer_5(minutes=SHORT_BREAK_MIN-1,seconds=59):
     if minutes == 0 and seconds == 0 :
         return 
     returned_sec = seconds - 1
-    app.after(1000,start_timer_5,returned_min,returned_sec)
+    app.after(after_var_delay,start_timer_5,returned_min,returned_sec)
 
 def start_timer_20(minutes=LONG_BREAK_MIN-1,seconds=59):
     if reset:
@@ -74,20 +82,18 @@ def start_timer_20(minutes=LONG_BREAK_MIN-1,seconds=59):
     if minutes == 0 and seconds == 0 :
         return 
     returned_sec = seconds - 1
-    app.after(1000,start_timer_20,returned_min,returned_sec)
+    app.after(after_var_delay,start_timer_20,returned_min,returned_sec)
 
-def start_timer_25(minutes=WORK_MIN-1,seconds=59):
+def start_timer_25(minutes=WORK_MIN-1,seconds=1):
     global check_marks
     start_button.config(state='disabled')
+    #if reset button is pressed
     if reset:
         return 
-    if seconds == 0 and  minutes != 0 :
-        seconds = 59
-        returned_min = minutes - 1
-    else:
-        returned_min = minutes
+    #if seconds = 0 and there are minutes left turn second to 59 after pausing at 0 for a second 
+
     state_label.config(text="Timer Started",font=(TITLE_FONT_NAME,20))
-    tomato_image_label.config(text=f"{returned_min:02d}:{seconds:02d}")
+    tomato_image_label.config(text=f"{minutes:02d}:{seconds:02d}")
     if minutes == 0 and seconds == 0 :
         check_marks.append(CHECK_MARK_EMOJI)
         display_check_marks()
@@ -96,8 +102,13 @@ def start_timer_25(minutes=WORK_MIN-1,seconds=59):
             start_timer_20()
         start_timer_5()
         return
-    returned_sec = seconds - 1
-    app.after(1000,start_timer_25,returned_min,returned_sec)
+    if seconds == 0 and  minutes != 0 :
+        returned_sec = 59
+        returned_min = minutes - 1
+    else:
+        returned_min = minutes
+        returned_sec = seconds - 1
+    app.after(after_var_delay,start_timer_25,returned_min,returned_sec)
 
 start_button = tk.Button(app,text="Start",font=(FONT_NAME,10),command=lambda: [reset_var_reset() ,start_timer_25()],width=5,state='active')
 start_button.grid(column=0,row=2)
@@ -115,7 +126,7 @@ reset_button.grid(column=2,row=2)
 
 def display_check_marks():
     '''used to display check markes every successfull 25 minutes'''
-    check_marks_label = tk.Label(text=f"{" ".join(check_marks)}",font=("Arial",15,),bg=YELLOW,width=5)
+    check_marks_label = tk.Label(text=f"{" ".join(check_marks)}",font=(FONT_NAME,15,),bg=YELLOW,width=5)
     check_marks_label.config(padx=70,pady=30)
     check_marks_label.grid(column=1,row=4)
 
@@ -125,5 +136,4 @@ def check_for_completion():
         return True
 app.grid_columnconfigure(1,weight=3)
 app.grid_columnconfigure(0,weight=0)
-app.grid_columnconfigure(1,weight=3)
 app.mainloop()
