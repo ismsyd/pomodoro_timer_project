@@ -2,7 +2,7 @@
 A simple light weight python program that uses the pomodoro system to help focus on tasks
 
 ## Installing 
->All module used in the project are pre-installed with python 
+> All module used in the project are pre-installed with python 
 ### Modules used 
     1. time 
     2. math 
