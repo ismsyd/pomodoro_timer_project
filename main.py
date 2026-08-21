@@ -37,7 +37,7 @@ def reset_var_reset():
     '''use this function to be able to run the start timer func again after reset when button is pressed '''
     global reset
     reset = False
-def start_timer_5(minutes=SHORT_BREAK_MIN-1,seconds=3):
+def start_timer_5(minutes=SHORT_BREAK_MIN-1,seconds=59):
     if reset:
         return
     if seconds == 0 and  minutes != 0 :
@@ -68,7 +68,7 @@ def start_timer_20(minutes=LONG_BREAK_MIN-1,seconds=59):
     returned_sec = seconds - 1
     app.after(after_var_delay,start_timer_20,returned_min,returned_sec)
 
-def start_timer_25(minutes=WORK_MIN-1,seconds=1):
+def start_timer_25(minutes=WORK_MIN-1,seconds=59):
     global check_marks
     start_button.config(state='disabled')
     #if reset button is pressed
@@ -95,7 +95,7 @@ def start_timer_25(minutes=WORK_MIN-1,seconds=1):
         returned_sec = seconds - 1
     app.after(after_var_delay,start_timer_25,returned_min,returned_sec)
 
-start_button = tk.Button(app,text="Start",font=(FONT_NAME,10),command=lambda: [reset_var_reset() ,start_timer_25()],width=5,state='active')
+start_button = tk.Button(app,text="Start",font=(FONT_NAME,10),command=lambda: [reset_var_reset() ,start_timer_25()],width=5,state='active',padx=10,pady=10)
 start_button.grid(column=0,row=2)
 
 def reset_timer():
@@ -108,7 +108,7 @@ def reset_timer():
         check_marks = []
     return
 
-reset_button = tk.Button(app,text="Reset",font=(FONT_NAME,10),command=lambda: [reset_timer()] ,width=5)
+reset_button = tk.Button(app,text="Reset",font=(FONT_NAME,10),command=lambda: [reset_timer()] ,width=5,padx=10,pady=10)
 reset_button.grid(column=2,row=2)
 
 def display_check_marks():
