@@ -84,7 +84,7 @@ def start_timer_20(minutes=LONG_BREAK_MIN-1,seconds=59):
     returned_sec = seconds - 1
     app.after(after_var_delay,start_timer_20,returned_min,returned_sec)
 
-def start_timer_25(minutes=WORK_MIN-1,seconds=1):
+def start_timer_25(minutes=WORK_MIN-1,seconds=59):
     global check_marks
     start_button.config(state='disabled')
     #if reset button is pressed
@@ -115,10 +115,12 @@ start_button.grid(column=0,row=2)
 
 def reset_timer():
     '''Used when the reset button is pressed'''
-    global reset 
+    global reset,check_marks
     reset = True
     tomato_image_label.config(text='00:00')
     start_button.config(state='active')
+    if len(check_marks) == 4:
+        check_marks = []
     return
 
 reset_button = tk.Button(app,text="Reset",font=(FONT_NAME,10),command=lambda: [reset_timer()] ,width=5)
@@ -134,6 +136,7 @@ def check_for_completion():
     '''used to check wether user completed 4 25 minutes sessions to start 20 minutes break'''
     if len(check_marks) == 4:
         return True
+    
 app.grid_columnconfigure(1,weight=3)
 app.grid_columnconfigure(0,weight=0)
 app.mainloop()
